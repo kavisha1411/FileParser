@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'fileops',
         'USER': 'kavishag',
         'PASSWORD': 'kavishag',
-        'HOST':'localhost',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
@@ -127,8 +127,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# MEDIA_URL = 'media/'
+MEDIA_ROOT = '/home/kavisha/PycharmProjects/pythonProject/fileParser/fileapp/uploads/files/'
+MEDIA_URL = 'media/'
 
 
 # Default primary key field type
@@ -155,27 +155,6 @@ STATUS_CHOICES = (
     (STATUS_OK, _('OK')),
     (STATUS_ON_HOLD, _('On hold')),
 )
-#
-# COUNTRY_CHOICES = (
-#     ('Austria', _('Austria')),
-#     ('Belgium', _('Belgium')),
-#     ('Czech Republic', _('Czech Republic')),
-#     ('Denmark', _('Denmark')),
-#     ('Estonia', _('Estonia')),
-#     ('Finland', _('Finland')),
-#     ('France', _('France')),
-#     ('Germany', _('Germany')),
-#     ('Hungary', _('Hungary')),
-#     ('Italy', _('Italy')),
-#     ('Latvia', _('Latvia')),
-#     ('Netherlands', _('Netherlands')),
-#     ('Poland', _('Poland')),
-#     ('Romania', _('Romania')),
-#     ('Spain', _('Spain')),
-#     ('Sweden', _('Sweden')),
-#     ('Switzerland', _('Switzerland')),
-#     ('United Kingdom', _('United Kingdom')),
-# )
 
 LANGUAGE_CODE_DE = 'DE'
 LANGUAGE_CODE_EN = 'EN'
