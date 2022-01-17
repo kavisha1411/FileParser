@@ -76,7 +76,7 @@ DATABASES = {
 }
 ```
 
-### Executing
+### Execution
   
 In terminal, within the project directory, run
 ```
