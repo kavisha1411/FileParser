@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-from django.utils.translation import gettext_lazy as _
 import os
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'fileapp.apps.FileappConfig',
     'rest_framework',
+    'django_nose',
 ]
 
 MIDDLEWARE = [
@@ -88,7 +89,11 @@ DATABASES = {
         'PASSWORD': 'kavishag',
         'HOST': 'localhost',
         'PORT': '5432',
-    }
+    },
+    'test': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'test_database.sqlite'),
+        },
 }
 
 
@@ -127,7 +132,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-MEDIA_ROOT = '/home/kavisha/PycharmProjects/pythonProject/fileParser/fileapp/uploads/files/'
+MEDIA_ROOT = str(BASE_DIR) + '/fileapp/uploads/files/'
 MEDIA_URL = 'media/'
 
 
@@ -136,46 +141,33 @@ MEDIA_URL = 'media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-PAYMENT_METHOD_BANK = 'bank'
-PAYMENT_METHOD_CC = 'cc'
-PAYMENT_METHOD_FAX = 'fax'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s [%(process)s] [%(levelname)s] %(name)s: %(message)s',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'formatter': 'verbose',
+            'filename': str(BASE_DIR) + '/fileapp.log',
+        },
+    },
+    'loggers': {'fileapp': {'level': 'INFO', 'handlers': ['file']}},
+}
 
-PAYMENT_METHOD_CHOICES = (
-    (PAYMENT_METHOD_BANK, _('bank')),
-    (PAYMENT_METHOD_CC, _('cc')),
-    (PAYMENT_METHOD_FAX, _('fax')),
-)
+# Use nose to run all tests
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-STATUS_CANCELLED = 'Cancelled'
-STATUS_OK = 'OK'
-STATUS_ON_HOLD = 'On hold'
+# Tell nose to measure coverage on the 'foo' and 'bar' apps
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=foo,bar',
+]
 
-STATUS_CHOICES = (
-    (STATUS_CANCELLED, _('Cancelled')),
-    (STATUS_OK, _('OK')),
-    (STATUS_ON_HOLD, _('On hold')),
-)
-
-LANGUAGE_CODE_DE = 'DE'
-LANGUAGE_CODE_EN = 'EN'
-LANGUAGE_CODE_ES = 'ES'
-LANGUAGE_CODE_FI = 'FI'
-LANGUAGE_CODE_FR = 'FR'
-LANGUAGE_CODE_HU = 'HU'
-LANGUAGE_CODE_IT = 'IT'
-LANGUAGE_CODE_NL = 'NL'
-LANGUAGE_CODE_PL = 'PL'
-LANGUAGE_CODE_RU = 'RU'
-
-LANGUAGE_CHOICES = (
-    (LANGUAGE_CODE_DE, _('DE')),
-    (LANGUAGE_CODE_EN, _('EN')),
-    (LANGUAGE_CODE_ES, _('ES')),
-    (LANGUAGE_CODE_FI, _('FI')),
-    (LANGUAGE_CODE_FR, _('FR')),
-    (LANGUAGE_CODE_HU, _('HU')),
-    (LANGUAGE_CODE_IT, _('IT')),
-    (LANGUAGE_CODE_NL, _('NL')),
-    (LANGUAGE_CODE_PL, _('PL')),
-    (LANGUAGE_CODE_RU, _('RU')),
-)
+if 'test' in sys.argv:
+    DATABASES['default'] = DATABASES['test']

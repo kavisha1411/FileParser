@@ -1,9 +1,9 @@
 <div style="padding:40px;margin:40px;border:1px solid #ccc">
-    <h1>Django File Upload</h1>
+    <h1>Django File Update</h1>
     <form method="POST" class="post-form" enctype="multipart/form-data">
       {% csrf_token %}
       {{ form.as_p }}
-      <button type="submit">Submit</button>
+      <button type="submit">Submit updated file</button>
     </form><hr>
     <ul>
     {% for document in documents %}

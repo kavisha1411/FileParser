@@ -1,11 +1,14 @@
 from django.db import models
-from fileParser.settings import (
-    PAYMENT_METHOD_CHOICES, STATUS_CHOICES, LANGUAGE_CHOICES,)
+from .settings import (
+    PAYMENT_METHOD_CHOICES, STATUS_CHOICES, LANGUAGE_CHOICES,
+    COUNTRY_CHOICES, PARSE_CHOICES, PARSE_CODE_NORMAL)
 from django.utils.translation import gettext_lazy as _
 
 
 class Upload(models.Model):
-    upload_file = models.FileField()
+    uploaded_file = models.FileField()
+    date_uploaded = models.DateTimeField(auto_now_add=True, db_index=True, editable=False)
+    parse_type = models.CharField(default=PARSE_CODE_NORMAL, choices=PARSE_CHOICES, max_length=20)
 
     class Meta:
         db_table = 'upload_data'
@@ -27,9 +30,9 @@ class BookingData(models.Model):
     payment_method = models.CharField(_("payment_method"), choices=PAYMENT_METHOD_CHOICES, max_length=10)
     status = models.CharField(_("status"), choices=STATUS_CHOICES, max_length=10)
     date_of_creation = models.DateField(_("date_of_creation"))
-    email = models.CharField(_("email"), max_length=50)
-    phone = models.CharField(_("phone"), max_length=15, null=True, blank=True)
-    country = models.CharField(_("country"), max_length=15, null=True, blank=True)
+    email = models.EmailField(_("email"), max_length=50)
+    phone = models.CharField(_("phone"), max_length=20, null=True, blank=True)
+    country = models.CharField(_("country"), choices=COUNTRY_CHOICES, max_length=25, null=True, blank=True)
     language = models.CharField(_("language"), choices=LANGUAGE_CHOICES, max_length=5)
     address = models.CharField(_("address"), max_length=100, null=True, blank=True)
     zipcode = models.CharField(_("zipcode"), max_length=8, null=True, blank=True)

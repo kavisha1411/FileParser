@@ -1,0 +1,15 @@
+[run]
+branch = True
+include =
+    ./*
+omit=
+    */.venv/*
+    */tests/*
+    *migrations*
+    */__init__.py
+    fileParser/wsgi.py
+    fileParser/asgi.py
+    fileParser/settings.py
+    manage.py
+    setup.py
+
